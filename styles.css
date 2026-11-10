@@ -3,7 +3,9 @@
 * { box-sizing: border-box; }
 body {
   margin: 0;
-  background: #F6F2E9;
+  background: #EDF2E8;
+  background-image: radial-gradient(rgba(47,107,76,0.07) 1.2px, transparent 1.2px);
+  background-size: 22px 22px;
   color: #25312B;
   font-family: "DM Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   font-size: 18px;
@@ -49,12 +51,30 @@ nav a.cta {
 }
 nav a.cta:hover { background: #B8943F; color: #fff; }
 
-.hero { padding: 52px 0 28px; }
+.hero { padding: 28px 0 28px; }
+.hero-fairway {
+  background:
+    repeating-linear-gradient(115deg, rgba(255,255,255,0.05) 0 42px, rgba(255,255,255,0) 42px 84px),
+    linear-gradient(135deg, #10291E 0%, #1E4D38 55%, #2F6B4C 100%);
+  border-radius: 26px;
+  padding: 40px 36px;
+  color: #F6F2E9;
+  box-shadow: 0 18px 36px rgba(16,41,30,0.28);
+}
+.hero-fairway h1 { color: #fff; }
+.hero-fairway p { color: #D8E2D5; }
+.hero-fairway .small { color: #C9D6C8; }
+.fairway-strip {
+  height: 12px;
+  background: repeating-linear-gradient(90deg, #2F6B4C 0 48px, #265A42 48px 96px, #C9A24B 96px 104px, #265A42 104px 152px);
+  border-radius: 999px;
+  margin: 18px 0 0;
+}
 .hero-grid { display: grid; grid-template-columns: 1.15fr 0.85fr; gap: 32px; align-items: center; }
 @media (max-width: 720px) { .hero-grid { grid-template-columns: 1fr; } }
 .eyebrow {
   display: inline-block;
-  background: #2F6B4C; color: #fff;
+  background: #C9A24B; color: #1E2B24;
   font-size: 13px; font-weight: 800; letter-spacing: 1.2px;
   padding: 7px 13px; border-radius: 999px; margin-bottom: 16px;
 }
@@ -79,7 +99,9 @@ p { margin: 0 0 16px; color: #3E4D44; }
 @media (max-width: 520px) { .btn-ghost { margin-left: 0; margin-top: 10px; } h1 { font-size: 36px; } }
 
 section { padding: 36px 0; }
-.soft { background: #E9EFE7; border-top: 1px solid #D8DECE; border-bottom: 1px solid #D8DECE; }
+.soft { background: #1E2B24; border-top: 1px solid #1E2B24; border-bottom: 1px solid #1E2B24; color: #F6F2E9; }
+.soft h2 { color: #fff; }
+.soft p { color: #D8E2D5; }
 .cream { background: #FFFEFA; border-top: 1px solid #E3DCC8; border-bottom: 1px solid #E3DCC8; }
 .card {
   background: #FFFEFA;
@@ -130,7 +152,9 @@ input:focus, select:focus, textarea:focus { outline: 3px solid #BFD8C6; border-c
 .check { font-weight: 400; font-size: 16px; }
 details { background: #FFFEFA; border: 1px solid #E3DCC8; border-radius: 14px; padding: 16px 18px; margin-bottom: 12px; }
 summary { font-weight: 700; cursor: pointer; font-size: 18px; font-family: "Fraunces", serif; }
-footer { padding: 36px 0 52px; color: #6B7A70; font-size: 16px; }
+footer { padding: 36px 0 52px; color: #D8E2D5; font-size: 16px; background: #10291E; }
+footer p { color: #D8E2D5; }
+footer a { color: #FFD97A; }
 .small { font-size: 15px; color: #6B7A70; }
 .progress { display: flex; gap: 8px; margin: 18px 0; flex-wrap: wrap; }
 .progress span { padding: 8px 14px; border-radius: 999px; font-weight: 700; font-size: 15px; background: #EAF1EA; border: 1.5px solid #CBDACD; }
