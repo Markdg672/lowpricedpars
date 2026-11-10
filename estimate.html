@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Trade In Your Golf Clubs — LowPricedPars</title>
-<meta name="description" content="Trade in your used golf clubs with LPP. Search by brand, model, or club type, add everything to one trade-in, choose payout, ship it, get paid.">
+<meta name="description" content="Trade in your used golf clubs with LPP. Pick item type, category, brand, then your model — add everything to one trade-in, choose payout, ship it, get paid.">
 <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -26,7 +26,7 @@
     <section>
       <span class="eyebrow">LPP TRADE-IN</span>
       <h1>Trade in your golf clubs.</h1>
-      <p class="lead">The fastest way to find what your clubs are worth with LPP. Search by brand, model, or club type and add everything to the same trade-in. No limit on how many you trade.</p>
+      <p class="lead">Pick what you've got, step by step — item type, category, brand, then your model. Add everything to the same trade-in. No limit on how many you trade.</p>
       <p class="note" style="margin-top:10px;"><strong>Preview:</strong> the values below are examples while LPP sets its real price list. They show how the page works — final prices are set after LPP inspects your clubs in hand.</p>
 
       <div class="progress">
@@ -36,29 +36,92 @@
         <span>04 · Get paid</span>
       </div>
 
-      <div class="search-bar">
-        <input id="search" type="text" placeholder="Search by brand, model, or club type…  try “Titleist driver”" autocomplete="off">
-      </div>
-      <div class="pill-row" id="typeFilters">
-        <button class="pill on" data-type="All">All clubs</button>
-        <button class="pill" data-type="Driver">Drivers</button>
-        <button class="pill" data-type="Fairway wood">Fairway woods</button>
-        <button class="pill" data-type="Hybrid">Hybrids</button>
-        <button class="pill" data-type="Irons">Irons</button>
-        <button class="pill" data-type="Wedge">Wedges</button>
-        <button class="pill" data-type="Putter">Putters</button>
-      </div>
-      <p class="small" id="resultCount"></p>
-
       <div class="trade-layout">
         <div>
-          <div class="results" id="results"></div>
+          <!-- Dropdowns, like the screenshot: one row per step -->
+          <div class="dd" id="dropdowns">
+            <div class="dd-row" data-dd="itemType">
+              <button class="dd-head" type="button" onclick="toggleDd('itemType')">
+                <span class="dd-label">Select Item Type</span>
+                <span class="dd-value" id="val-itemType">Golf Clubs</span>
+                <span class="dd-chev" id="chev-itemType">⌄</span>
+              </button>
+              <div class="dd-options" id="opt-itemType"></div>
+            </div>
+            <div class="dd-row" data-dd="category">
+              <button class="dd-head" type="button" onclick="toggleDd('category')">
+                <span class="dd-label">Select Category</span>
+                <span class="dd-value" id="val-category">Driver</span>
+                <span class="dd-chev" id="chev-category">⌄</span>
+              </button>
+              <div class="dd-options" id="opt-category"></div>
+            </div>
+            <div class="dd-row" data-dd="brand">
+              <button class="dd-head" type="button" onclick="toggleDd('brand')">
+                <span class="dd-label">Select Brand</span>
+                <span class="dd-value" id="val-brand">Callaway</span>
+                <span class="dd-chev" id="chev-brand">⌄</span>
+              </button>
+              <div class="dd-options" id="opt-brand"></div>
+            </div>
+            <div class="dd-row" data-dd="model">
+              <button class="dd-head" type="button" onclick="toggleDd('model')">
+                <span class="dd-label">Select Model</span>
+                <span class="dd-value" id="val-model">Pick a model…</span>
+                <span class="dd-chev" id="chev-model">⌃</span>
+              </button>
+              <div class="dd-options model-panel" id="opt-model">
+                <div class="model-tools">
+                  <input id="modelSearch" type="text" placeholder="Search" autocomplete="off">
+                  <select id="modelSort">
+                    <option value="top">Sort: Top Traded</option>
+                    <option value="az">Sort: Name A–Z</option>
+                    <option value="low">Sort: Price Low to High</option>
+                    <option value="high">Sort: Price High to Low</option>
+                  </select>
+                </div>
+                <div class="pager">
+                  <span id="pageCount">1 – 30 of 0</span>
+                  <span class="pager-btns">
+                    <button type="button" onclick="goPage('first')">|&lt;</button>
+                    <button type="button" onclick="goPage('prev')">&lt;</button>
+                    <button type="button" onclick="goPage('next')">&gt;</button>
+                    <button type="button" onclick="goPage('last')">&gt;|</button>
+                  </span>
+                </div>
+                <div class="model-grid" id="modelGrid"></div>
+                <div class="pager" style="border-top:1px solid #E3DCC8;">
+                  <span id="pageCount2"></span>
+                  <span class="pager-btns">
+                    <button type="button" onclick="goPage('first')">|&lt;</button>
+                    <button type="button" onclick="goPage('prev')">&lt;</button>
+                    <button type="button" onclick="goPage('next')">&gt;</button>
+                    <button type="button" onclick="goPage('last')">&gt;|</button>
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Selected club -->
+          <div class="card" id="selectedCard" style="margin-top:16px; display:none;">
+            <h2 style="font-size:24px;" id="selName"></h2>
+            <p class="small" id="selMeta"></p>
+            <label for="condition">Condition — be honest, it sets the price</label>
+            <select id="condition">
+              <option value="new">New — never used, or looks new</option>
+              <option value="average" selected>Average — normal use, some scuffs</option>
+              <option value="below">Below Average — heavy wear or damage</option>
+            </select>
+            <p style="margin-top:12px;">We'll pay <strong id="selValue" style="font-size:24px;">$ —</strong> <span class="small">· example value</span></p>
+            <p><button class="btn" type="button" onclick="addSelected()">Add to trade-in →</button></p>
+          </div>
         </div>
 
         <div>
           <div class="calc-box cart-box">
             <h2 style="font-size:24px;">Your trade-in</h2>
-            <div id="cartList"><p><strong>No clubs added yet.</strong></p><p>Search above, pick a condition, and add clubs here.</p></div>
+            <div id="cartList"><p><strong>No clubs added yet.</strong></p><p>Pick a model above, then add it here.</p></div>
             <div class="price-big" id="estimatePrice" style="color:#2F6B4C;">$0</div>
             <p id="estimateDetail">Your total, before payout choice. Estimate only — final price after LPP inspects in hand.</p>
 
@@ -81,14 +144,14 @@
 
       <h2 style="margin-top:36px;">How it works</h2>
       <div class="grid">
-        <div class="card"><span class="step-num">01</span><h3>Add your clubs</h3><p>Search by brand, model, or club type and add everything to the same trade-in. Clubs, shafts, and other golf gear are all accepted, with no limit on how many you trade.</p><p><a href="#search"><strong>Start your trade →</strong></a></p></div>
+        <div class="card"><span class="step-num">01</span><h3>Add your clubs</h3><p>Pick item type, category, brand, then your model — and add everything to the same trade-in. No limit on how many you trade.</p></div>
         <div class="card"><span class="step-num">02</span><h3>Choose payout</h3><p>Cash, PayPal, or Check. Your total updates instantly as you switch, so you see what each option pays before you check out.</p></div>
         <div class="card"><span class="step-num">03</span><h3>Ship it</h3><p>Send your clubs to LPP with your photos — face, sole, serial number, shaft. Shipping label and packing details are coming soon — LPP to confirm.</p></div>
         <div class="card"><span class="step-num">04</span><h3>Get paid</h3><p>We inspect your clubs in hand, then we pay. If the condition matches what you said, you get the estimated price.</p></div>
       </div>
 
       <h2 style="margin-top:36px;">Questions, answered straight</h2>
-      <details><summary>Can I trade in more than one club at a time?</summary><p>Yes. Search by brand, model, or club type, and add every club to the same trade-in. There is no limit on how many you trade.</p></details>
+      <details><summary>Can I trade in more than one club at a time?</summary><p>Yes. Pick your models one by one and add every club to the same trade-in. There is no limit on how many you trade.</p></details>
       <details><summary>What besides clubs can I trade in?</summary><p>Clubs, shafts, and other golf gear are accepted. If you're not sure about an item, put it in the sell form and ask.</p></details>
       <details><summary>Does condition affect the value?</summary><p>Yes — it's the biggest factor. The better the condition, the higher the value. Use New, Average, or Below Average, and LPP grades each club in hand before paying.</p></details>
       <details><summary>What if my club arrives in worse condition?</summary><p>We'll send a revised, lower offer. You can accept it, or get the club back.</p></details>
@@ -112,118 +175,247 @@
 </footer>
 
 <script>
-// LPP's own price list — SAMPLE VALUES ONLY, while LPP sets real prices.
-// "value" = what LPP pays for the club in New condition.
-// Average pays 80% of it, Below Average pays 60%. Change the numbers here, the whole page follows.
+// LPP's own model list + price rules — SAMPLE VALUES ONLY, while LPP sets real prices.
+// Lists are newest first ("Top Traded"). Value = what LPP pays in New condition.
+// Average pays 80%, Below Average pays 60%. Change the numbers in sampleValue(), the whole page follows.
 var LPP_PAYS_PERCENT = 100;
 var CONDITION_PAY = { "new": 1.0, "average": 0.8, "below": 0.6 };
-var CONDITION_LABEL = { "new": "New", "average": "Average", "below": "Below Average" };
 
-var CATALOG = [
-  { brand: "Titleist", model: "TSR2 Driver", type: "Driver", value: 220 },
-  { brand: "Titleist", model: "TSR3 Driver", type: "Driver", value: 230 },
-  { brand: "Titleist", model: "TSR4 Driver", type: "Driver", value: 240 },
-  { brand: "Titleist", model: "TSi2 Driver", type: "Driver", value: 190 },
-  { brand: "Titleist", model: "TSi3 Driver", type: "Driver", value: 200 },
-  { brand: "Titleist", model: "GT2 Driver", type: "Driver", value: 240 },
-  { brand: "Titleist", model: "GT3 Driver", type: "Driver", value: 250 },
-  { brand: "Titleist", model: "GT4 Driver", type: "Driver", value: 260 },
-  { brand: "Titleist", model: "AP2 Irons", type: "Irons", value: 360 },
-  { brand: "Titleist", model: "T100 Irons", type: "Irons", value: 420 },
-  { brand: "Titleist", model: "T150 Irons", type: "Irons", value: 430 },
-  { brand: "Titleist", model: "T200 Irons", type: "Irons", value: 380 },
-  { brand: "Titleist", model: "Vokey SM9 Wedge", type: "Wedge", value: 75 },
-  { brand: "Titleist", model: "Vokey SM10 Wedge", type: "Wedge", value: 85 },
-  { brand: "Titleist", model: "Scotty Cameron Putter", type: "Putter", value: 260 },
-  { brand: "Callaway", model: "Paradym Driver", type: "Driver", value: 240 },
-  { brand: "Callaway", model: "Paradym Ai Smoke Driver", type: "Driver", value: 260 },
-  { brand: "Callaway", model: "Rogue ST Max Driver", type: "Driver", value: 180 },
-  { brand: "Callaway", model: "Epic Speed Driver", type: "Driver", value: 170 },
-  { brand: "Callaway", model: "Mavrik Driver", type: "Driver", value: 150 },
-  { brand: "Callaway", model: "Apex Irons", type: "Irons", value: 350 },
-  { brand: "Callaway", model: "Apex Pro Irons", type: "Irons", value: 380 },
-  { brand: "Callaway", model: "Jaws Raw Wedge", type: "Wedge", value: 80 },
-  { brand: "Callaway", model: "Odyssey Putter", type: "Putter", value: 140 },
-  { brand: "TaylorMade", model: "Stealth 2 Driver", type: "Driver", value: 230 },
-  { brand: "TaylorMade", model: "Stealth Driver", type: "Driver", value: 200 },
-  { brand: "TaylorMade", model: "Qi10 Driver", type: "Driver", value: 250 },
-  { brand: "TaylorMade", model: "Qi35 Driver", type: "Driver", value: 270 },
-  { brand: "TaylorMade", model: "SIM2 Driver", type: "Driver", value: 180 },
-  { brand: "TaylorMade", model: "P790 Irons", type: "Irons", value: 420 },
-  { brand: "TaylorMade", model: "P770 Irons", type: "Irons", value: 400 },
-  { brand: "TaylorMade", model: "MG4 Wedge", type: "Wedge", value: 85 },
-  { brand: "TaylorMade", model: "Spider Putter", type: "Putter", value: 180 },
-  { brand: "Ping", model: "G430 Driver", type: "Driver", value: 230 },
-  { brand: "Ping", model: "G425 Driver", type: "Driver", value: 180 },
-  { brand: "Ping", model: "G410 Driver", type: "Driver", value: 150 },
-  { brand: "Ping", model: "i230 Irons", type: "Irons", value: 400 },
-  { brand: "Ping", model: "i525 Irons", type: "Irons", value: 360 },
-  { brand: "Ping", model: "G430 Irons", type: "Irons", value: 380 },
-  { brand: "Ping", model: "Glide Wedge", type: "Wedge", value: 70 },
-  { brand: "Ping", model: "Anser Putter", type: "Putter", value: 130 },
-  { brand: "Cobra", model: "Aerojet Driver", type: "Driver", value: 210 },
-  { brand: "Cobra", model: "LTDx Driver", type: "Driver", value: 180 },
-  { brand: "Cobra", model: "King Radspeed Driver", type: "Driver", value: 160 },
-  { brand: "Cobra", model: "King Forged Irons", type: "Irons", value: 340 },
-  { brand: "Cobra", model: "King Snakebite Wedge", type: "Wedge", value: 65 },
-  { brand: "Mizuno", model: "ST-Z 230 Driver", type: "Driver", value: 200 },
-  { brand: "Mizuno", model: "ST-X 230 Driver", type: "Driver", value: 190 },
-  { brand: "Mizuno", model: "JPX 923 Irons", type: "Irons", value: 360 },
-  { brand: "Mizuno", model: "JPX 925 Irons", type: "Irons", value: 380 },
-  { brand: "Mizuno", model: "T24 Wedge", type: "Wedge", value: 80 },
-  { brand: "Mizuno", model: "M Craft Putter", type: "Putter", value: 150 }
-];
+var ITEM_TYPES = ["Golf Clubs"];
+var CATEGORIES = ["Driver", "Fairway Wood", "Hybrid", "Irons", "Wedge", "Putter", "Full Set"];
+var BRANDS = ["Callaway", "Titleist", "TaylorMade", "Ping", "Cobra", "Mizuno", "Srixon", "Cleveland", "Wilson", "Tour Edge", "Other"];
 
+// Models per brand, per category. Newest / most traded first.
+var MODELS = {
+  "Callaway": {
+    "Driver": ["Paradym Ai Smoke Max", "Paradym Ai Smoke", "Paradym Ai Smoke Triple Diamond", "Elyte", "Elyte Max", "Elyte Triple Diamond", "Elyte Mini", "Quantum Triple Diamond Max", "Paradym", "Paradym X", "Paradym Triple Diamond", "Rogue ST Max", "Rogue ST", "Rogue ST Triple Diamond", "Rogue ST Max LS", "Epic Flash", "Epic Speed", "Epic Max", "Epic Max LS", "Mavrik", "Mavrik Max", "Mavrik Sub Zero", "Big Bertha B21", "Big Bertha", "Great Big Bertha", "XR", "XR16", "XR Speed", "Diablo", "FT-9"],
+    "Fairway Wood": ["Paradym Ai Smoke Fairway", "Paradym Fairway", "Rogue ST Max Fairway", "Epic Speed Fairway", "Mavrik Fairway", "Big Bertha B21 Fairway"],
+    "Hybrid": ["Paradym Ai Smoke Hybrid", "Paradym Hybrid", "Rogue ST Max Hybrid", "Epic Super Hybrid", "Mavrik Hybrid", "Big Bertha Hybrid"],
+    "Irons": ["Apex Irons", "Apex Pro Irons", "Apex DCB Irons", "Paradym Irons", "Paradym X Irons", "Rogue ST Max Irons", "Rogue ST Pro Irons", "Epic Forged Irons", "Mavrik Irons", "Mavrik Max Irons", "Big Bertha Irons", "X Forged Irons"],
+    "Wedge": ["Jaws Raw Wedge", "Jaws MD5 Wedge", "Mack Daddy CB Wedge", "Sure Out Wedge"],
+    "Putter": ["Odyssey Putter", "Odyssey White Hot Putter", "Odyssey Toulon Putter", "Odyssey 2-Ball Putter"],
+    "Full Set": ["Paradym Full Set", "Rogue ST Max Full Set", "Mavrik Full Set", "Big Bertha Full Set", "Strata Full Set"]
+  },
+  "Titleist": {
+    "Driver": ["GT1 Driver", "GT2 Driver", "GT3 Driver", "GT4 Driver", "TSR1 Driver", "TSR2 Driver", "TSR3 Driver", "TSR4 Driver", "TSi1 Driver", "TSi2 Driver", "TSi3 Driver", "TSi4 Driver", "TS1 Driver", "TS2 Driver", "TS3 Driver", "TS4 Driver", "917 D2 Driver", "917 D3 Driver", "915 D2 Driver", "915 D3 Driver", "910 D2 Driver", "910 D3 Driver"],
+    "Fairway Wood": ["GT2 Fairway", "GT3 Fairway", "TSR2 Fairway", "TSR3 Fairway", "TSi2 Fairway", "TS2 Fairway", "917 F2 Fairway"],
+    "Hybrid": ["GT2 Hybrid", "GT3 Hybrid", "TSR2 Hybrid", "TSR3 Hybrid", "TSi2 Hybrid", "TS2 Hybrid", "818 H1 Hybrid"],
+    "Irons": ["T100 Irons", "T150 Irons", "T200 Irons", "T350 Irons", "AP2 Irons", "AP1 Irons", "AP3 Irons", "T-MB Irons", "U505 Irons", "620 MB Irons", "620 CB Irons"],
+    "Wedge": ["Vokey SM10 Wedge", "Vokey SM9 Wedge", "Vokey SM8 Wedge", "Vokey SM7 Wedge"],
+    "Putter": ["Scotty Cameron Putter", "Scotty Cameron Newport Putter", "Scotty Cameron Phantom Putter"],
+    "Full Set": ["T200 Full Set", "AP2 Full Set"]
+  },
+  "TaylorMade": {
+    "Driver": ["Qi35 Driver", "Qi35 Max Driver", "Qi35 LS Driver", "Qi10 Driver", "Qi10 Max Driver", "Qi10 LS Driver", "Stealth 2 Driver", "Stealth 2 Plus Driver", "Stealth 2 HD Driver", "Stealth Driver", "Stealth Plus Driver", "Stealth HD Driver", "SIM2 Driver", "SIM2 Max Driver", "SIM2 Max D Driver", "SIM Driver", "SIM Max Driver", "SIM Max D Driver", "M6 Driver", "M5 Driver", "M4 Driver", "M3 Driver", "M2 Driver", "M1 Driver"],
+    "Fairway Wood": ["Qi10 Fairway", "Stealth 2 Fairway", "Stealth Fairway", "SIM2 Fairway", "SIM Fairway", "M6 Fairway", "M4 Fairway"],
+    "Hybrid": ["Qi10 Rescue", "Stealth 2 Rescue", "Stealth Rescue", "SIM2 Rescue", "SIM Rescue", "M6 Rescue"],
+    "Irons": ["P790 Irons", "P770 Irons", "P7MB Irons", "P7MC Irons", "P760 Irons", "P730 Irons", "Qi Irons", "Stealth Irons", "SIM2 Max Irons", "SIM Max Irons", "M6 Irons", "M4 Irons"],
+    "Wedge": ["MG4 Wedge", "MG3 Wedge", "MG2 Wedge", "Hi-Toe 3 Wedge"],
+    "Putter": ["Spider Putter", "Spider Tour Putter", "Spider GT Putter", "TP Hydro Blast Putter"],
+    "Full Set": ["P790 Full Set", "Stealth Full Set", "SIM2 Max Full Set"]
+  },
+  "Ping": {
+    "Driver": ["G430 Max Driver", "G430 LST Driver", "G430 SFT Driver", "G425 Max Driver", "G425 LST Driver", "G425 SFT Driver", "G410 Plus Driver", "G410 LST Driver", "G410 SFT Driver", "G400 Max Driver", "G400 LST Driver", "G400 SFT Driver", "G400 Driver", "G30 Driver", "G25 Driver", "G20 Driver", "G15 Driver"],
+    "Fairway Wood": ["G430 Fairway", "G425 Fairway", "G410 Fairway", "G400 Fairway", "G30 Fairway"],
+    "Hybrid": ["G430 Hybrid", "G425 Hybrid", "G410 Hybrid", "G400 Hybrid", "G30 Hybrid"],
+    "Irons": ["i230 Irons", "i525 Irons", "i210 Irons", "i200 Irons", "i59 Irons", "G430 Irons", "G425 Irons", "G410 Irons", "G400 Irons", "G30 Irons"],
+    "Wedge": ["Glide 4.0 Wedge", "Glide 3.0 Wedge", "Glide 2.0 Wedge"],
+    "Putter": ["Anser Putter", "Anser 2 Putter", "Prime Tyne Putter", "Sigma 2 Putter"],
+    "Full Set": ["G430 Full Set", "G425 Full Set"]
+  },
+  "Cobra": {
+    "Driver": ["DarkSpeed Driver", "DarkSpeed Max Driver", "DarkSpeed LS Driver", "Aerojet Driver", "Aerojet Max Driver", "Aerojet LS Driver", "LTDx Driver", "LTDx Max Driver", "LTDx LS Driver", "King Radspeed Driver", "King Radspeed XB Driver", "King Radspeed XD Driver", "King F9 Speedback Driver", "King F8 Driver", "King F7 Driver"],
+    "Fairway Wood": ["DarkSpeed Fairway", "Aerojet Fairway", "LTDx Fairway", "King Radspeed Fairway", "King F9 Fairway"],
+    "Hybrid": ["DarkSpeed Hybrid", "Aerojet Hybrid", "LTDx Hybrid", "King Radspeed Hybrid", "King F9 Hybrid"],
+    "Irons": ["King Forged Irons", "King Tour Irons", "King Forged Tec Irons", "DarkSpeed Irons", "Aerojet Irons", "LTDx Irons", "King F9 Irons"],
+    "Wedge": ["King Snakebite Wedge", "King MIM Wedge"],
+    "Putter": ["King Vintage Putter", "King 3D Printed Putter"],
+    "Full Set": ["DarkSpeed Full Set", "Aerojet Full Set"]
+  },
+  "Mizuno": {
+    "Driver": ["ST-Z 230 Driver", "ST-X 230 Driver", "ST-Z 220 Driver", "ST-X 220 Driver", "ST200 Driver", "ST190 Driver", "ST180 Driver", "JPX 850 Driver", "JPX 900 Driver"],
+    "Fairway Wood": ["ST-Z 230 Fairway", "ST-X 230 Fairway", "ST200 Fairway", "JPX 900 Fairway"],
+    "Hybrid": ["CLK Hybrid", "JPX 900 Hybrid", "ST200 Hybrid"],
+    "Irons": ["JPX 923 Irons", "JPX 925 Irons", "JPX 921 Irons", "JPX 919 Irons", "JPX 900 Irons", "MP-20 Irons", "MP-18 Irons", "T-Zoid Irons"],
+    "Wedge": ["T24 Wedge", "T22 Wedge", "S18 Wedge"],
+    "Putter": ["M Craft Putter", "M Craft OMOI Putter"],
+    "Full Set": ["JPX 923 Full Set"]
+  },
+  "Srixon": {
+    "Driver": ["ZX5 Mk II Driver", "ZX7 Mk II Driver", "ZX5 Driver", "ZX7 Driver", "Z 785 Driver", "Z 585 Driver", "Z 765 Driver", "Z 565 Driver"],
+    "Fairway Wood": ["ZX Mk II Fairway", "ZX Fairway", "Z F85 Fairway"],
+    "Hybrid": ["ZX Mk II Hybrid", "ZX Hybrid", "Z H85 Hybrid"],
+    "Irons": ["ZX5 Mk II Irons", "ZX7 Mk II Irons", "ZX5 Irons", "ZX7 Irons", "Z 785 Irons", "Z 585 Irons"],
+    "Wedge": ["Cleveland RTX Wedge", "Srixon Wedge"],
+    "Putter": ["Srixon Putter"],
+    "Full Set": ["ZX5 Full Set"]
+  },
+  "Cleveland": {
+    "Driver": ["Launcher XL Driver", "Launcher XL Lite Driver", "Launcher HB Turbo Driver", "Launcher Turbo Driver"],
+    "Fairway Wood": ["Launcher XL Fairway", "Launcher HB Turbo Fairway"],
+    "Hybrid": ["Launcher XL Halo Hybrid", "Launcher HB Turbo Hybrid"],
+    "Irons": ["Launcher XL Irons", "Launcher UHX Irons", "Launcher HB Irons"],
+    "Wedge": ["RTX 6 ZipCore Wedge", "RTX ZipCore Wedge", "CBX 2 Wedge"],
+    "Putter": ["HB Soft Putter", "Frontline Putter"],
+    "Full Set": ["Launcher XL Full Set"]
+  },
+  "Wilson": {
+    "Driver": ["D9 Driver", "D7 Driver", "Staff Model Driver", "C300 Driver"],
+    "Fairway Wood": ["D9 Fairway", "D7 Fairway", "Staff Model Fairway"],
+    "Hybrid": ["D9 Hybrid", "D7 Hybrid"],
+    "Irons": ["D9 Irons", "D7 Irons", "Staff Model CB Irons", "Staff Model Blade Irons"],
+    "Wedge": ["Staff Model Wedge", "Harmonized Wedge"],
+    "Putter": ["Staff Model Putter", "Infinite Putter"],
+    "Full Set": ["D9 Full Set", "Profile Full Set"]
+  },
+  "Tour Edge": {
+    "Driver": ["Exotics C723 Driver", "Exotics E723 Driver", "Exotics C722 Driver", "Exotics E722 Driver", "Hot Launch C524 Driver"],
+    "Fairway Wood": ["Exotics C723 Fairway", "Exotics E723 Fairway", "Hot Launch C524 Fairway"],
+    "Hybrid": ["Exotics C723 Hybrid", "Exotics E723 Hybrid", "Hot Launch C524 Hybrid"],
+    "Irons": ["Exotics C723 Irons", "Exotics E723 Irons", "Hot Launch C524 Irons"],
+    "Wedge": ["Exotics Wedge"],
+    "Putter": ["Exotics Putter"],
+    "Full Set": ["Hot Launch Full Set"]
+  },
+  "Other": {
+    "Driver": ["Other Driver — tell us in the sell form"],
+    "Fairway Wood": ["Other Fairway Wood — tell us in the sell form"],
+    "Hybrid": ["Other Hybrid — tell us in the sell form"],
+    "Irons": ["Other Irons — tell us in the sell form"],
+    "Wedge": ["Other Wedge — tell us in the sell form"],
+    "Putter": ["Other Putter — tell us in the sell form"],
+    "Full Set": ["Other Full Set — tell us in the sell form"]
+  }
+};
+
+// Sample value by category + how new the model is (its place in the list).
+function sampleValue(category, pos) {
+  var base = { "Driver": [260, 220, 180, 140], "Fairway Wood": [180, 150, 120, 90], "Hybrid": [160, 130, 100, 80], "Irons": [420, 360, 300, 240], "Wedge": [85, 75, 65, 55], "Putter": [200, 150, 110, 80], "Full Set": [600, 500, 400, 300] }[category] || [150, 120, 100, 80];
+  var tier = pos < 3 ? 0 : pos < 7 ? 1 : pos < 12 ? 2 : 3;
+  return base[tier];
+}
+
+var state = { itemType: "Golf Clubs", category: "Driver", brand: "Callaway", model: null, page: 1, sort: "top", query: "" };
 var cart = [];
 var payout = "Cash";
-var activeType = "All";
+var PAGE_SIZE = 30;
+
+function modelList() {
+  var names = (MODELS[state.brand] && MODELS[state.brand][state.category]) || [];
+  var list = names.map(function (name, i) {
+    return { brand: state.brand, model: name, type: state.category, value: sampleValue(state.category, i), pos: i };
+  });
+  var q = state.query.trim().toLowerCase();
+  if (q) list = list.filter(function (c) { return (c.brand + " " + c.model + " " + c.type).toLowerCase().indexOf(q) !== -1; });
+  if (state.sort === "az") list = list.slice().sort(function (a, b) { return a.model.localeCompare(b.model); });
+  if (state.sort === "low") list = list.slice().sort(function (a, b) { return a.value - b.value; });
+  if (state.sort === "high") list = list.slice().sort(function (a, b) { return b.value - a.value; });
+  return list;
+}
 
 function clubValue(c, cond) {
   return Math.round(c.value * LPP_PAYS_PERCENT / 100 * CONDITION_PAY[cond]);
 }
 
-function renderResults() {
-  var q = document.getElementById("search").value.trim().toLowerCase();
-  var list = CATALOG.filter(function (c) {
-    var hay = (c.brand + " " + c.model + " " + c.type).toLowerCase();
-    if (activeType !== "All" && c.type !== activeType) return false;
-    if (q && hay.indexOf(q) === -1) return false;
-    return true;
+function fillOptions(id, items, current, onPick) {
+  var el = document.getElementById(id);
+  el.innerHTML = "";
+  items.forEach(function (item) {
+    var b = document.createElement("button");
+    b.type = "button";
+    b.className = "dd-option" + (item === current ? " on" : "");
+    b.textContent = item;
+    b.onclick = function () { onPick(item); };
+    el.appendChild(b);
   });
-  document.getElementById("resultCount").textContent = list.length + (list.length === 1 ? " club found" : " clubs found") + " — example values";
-  var html = "";
-  list.forEach(function (c, i) {
-    var idx = CATALOG.indexOf(c);
-    html += '<div class="card result-card">'
-      + '<p class="small" style="margin-bottom:2px;">' + c.brand.toUpperCase() + ' · ' + c.type.toUpperCase() + '</p>'
-      + '<h3>' + c.model + '</h3>'
-      + '<label>Condition</label>'
-      + '<select id="cond-' + idx + '" onchange="updateCardValue(' + idx + ')">'
-      + '<option value="new">New</option>'
-      + '<option value="average" selected>Average</option>'
-      + '<option value="below">Below Average</option>'
-      + '</select>'
-      + '<p style="margin-top:10px;">We\'ll pay <strong id="val-' + idx + '">$' + clubValue(c, "average") + '</strong> <span class="small">· example value</span></p>'
-      + '<p><button class="btn" type="button" onclick="addClub(' + idx + ')">Add to trade-in →</button></p>'
-      + '</div>';
-  });
-  if (!list.length) html = '<div class="card"><h3>No clubs found</h3><p>Try a different brand, model, or club type — or pick "Other" in the sell form and tell us what you have.</p></div>';
-  document.getElementById("results").innerHTML = html;
 }
 
-function updateCardValue(idx) {
-  var c = CATALOG[idx];
-  var cond = document.getElementById("cond-" + idx).value;
-  document.getElementById("val-" + idx).textContent = "$" + clubValue(c, cond);
+function renderDropdowns() {
+  document.getElementById("val-itemType").textContent = state.itemType;
+  document.getElementById("val-category").textContent = state.category;
+  document.getElementById("val-brand").textContent = state.brand;
+  document.getElementById("val-model").textContent = state.model ? state.model.model : "Pick a model…";
+  fillOptions("opt-itemType", ITEM_TYPES, state.itemType, function (v) { state.itemType = v; closeAllDd(); renderDropdowns(); });
+  fillOptions("opt-category", CATEGORIES, state.category, function (v) { state.category = v; state.model = null; state.page = 1; closeAllDd(); renderDropdowns(); renderModels(); renderSelected(); });
+  fillOptions("opt-brand", BRANDS, state.brand, function (v) { state.brand = v; state.model = null; state.page = 1; closeAllDd(); renderDropdowns(); renderModels(); renderSelected(); });
 }
 
-function addClub(idx) {
-  var c = CATALOG[idx];
-  var cond = document.getElementById("cond-" + idx).value;
-  cart.push({ name: c.brand + " " + c.model, cond: CONDITION_LABEL[cond], value: clubValue(c, cond) });
+function closeAllDd() {
+  document.querySelectorAll(".dd-options").forEach(function (el) { el.classList.remove("open"); });
+  document.querySelectorAll(".dd-chev").forEach(function (el) { el.textContent = "⌄"; });
+}
+function toggleDd(which) {
+  var panel = document.getElementById("opt-" + which);
+  var wasOpen = panel.classList.contains("open");
+  closeAllDd();
+  if (!wasOpen) {
+    panel.classList.add("open");
+    document.getElementById("chev-" + which).textContent = "⌃";
+    if (which === "model") renderModels();
+  }
+}
+
+function renderModels() {
+  var list = modelList();
+  var pages = Math.max(1, Math.ceil(list.length / PAGE_SIZE));
+  if (state.page > pages) state.page = pages;
+  var start = (state.page - 1) * PAGE_SIZE;
+  var pageItems = list.slice(start, start + PAGE_SIZE);
+  var countText = list.length ? (start + 1) + " – " + Math.min(start + PAGE_SIZE, list.length) + " of " + list.length : "0 of 0";
+  document.getElementById("pageCount").textContent = countText;
+  document.getElementById("pageCount2").textContent = countText;
+  var grid = document.getElementById("modelGrid");
+  grid.innerHTML = "";
+  pageItems.forEach(function (c) {
+    var t = document.createElement("button");
+    t.type = "button";
+    t.className = "model-tile" + (state.model && state.model.model === c.model && state.model.brand === c.brand ? " on" : "");
+    t.innerHTML = "<span class=\"model-name\">" + c.model.toUpperCase() + "</span>"
+      + "<span class=\"model-meta\">" + c.brand + " · " + c.type + " · $" + clubValue(c, "average") + " avg.</span>";
+    t.onclick = function () { selectModel(c); };
+    grid.appendChild(t);
+  });
+  if (!pageItems.length) grid.innerHTML = "<p style=\"grid-column:1/-1;\">No models found — try a different search, or pick “Other” and tell us in the sell form.</p>";
+}
+
+function goPage(dir) {
+  var pages = Math.max(1, Math.ceil(modelList().length / PAGE_SIZE));
+  if (dir === "first") state.page = 1;
+  if (dir === "prev") state.page = Math.max(1, state.page - 1);
+  if (dir === "next") state.page = Math.min(pages, state.page + 1);
+  if (dir === "last") state.page = pages;
+  renderModels();
+}
+
+function selectModel(c) {
+  state.model = c;
+  closeAllDd();
+  renderDropdowns();
+  renderSelected();
+}
+
+function renderSelected() {
+  var card = document.getElementById("selectedCard");
+  if (!state.model) { card.style.display = "none"; return; }
+  card.style.display = "block";
+  document.getElementById("selName").textContent = state.model.brand + " " + state.model.model;
+  document.getElementById("selMeta").textContent = state.model.type + " · " + state.model.brand;
+  updateSelValue();
+}
+function updateSelValue() {
+  if (!state.model) return;
+  var cond = document.getElementById("condition").value;
+  document.getElementById("selValue").textContent = "$" + clubValue(state.model, cond);
+}
+document.getElementById("condition").addEventListener("change", updateSelValue);
+
+function addSelected() {
+  if (!state.model) return;
+  var cond = document.getElementById("condition").value;
+  var label = { "new": "New", "average": "Average", "below": "Below Average" }[cond];
+  cart.push({ name: state.model.brand + " " + state.model.model, cond: label, value: clubValue(state.model, cond) });
   renderCart();
 }
-
 function removeClub(i) { cart.splice(i, 1); renderCart(); }
 
 function renderCart() {
@@ -231,7 +423,7 @@ function renderCart() {
   var priceEl = document.getElementById("estimatePrice");
   var detailEl = document.getElementById("estimateDetail");
   if (!cart.length) {
-    listEl.innerHTML = "<p><strong>No clubs added yet.</strong></p><p>Search above, pick a condition, and add clubs here.</p>";
+    listEl.innerHTML = "<p><strong>No clubs added yet.</strong></p><p>Pick a model above, then add it here.</p>";
     priceEl.textContent = "$0";
     detailEl.textContent = "Your total, before payout choice. Estimate only — final price after LPP inspects in hand.";
     return;
@@ -247,15 +439,8 @@ function renderCart() {
   detailEl.textContent = cart.length + (cart.length === 1 ? " club" : " clubs") + " in your trade-in · " + payout + " · Estimate only — final price after LPP inspects in hand.";
 }
 
-document.getElementById("search").addEventListener("input", renderResults);
-document.querySelectorAll("#typeFilters .pill").forEach(function (el) {
-  el.addEventListener("click", function () {
-    activeType = el.getAttribute("data-type");
-    document.querySelectorAll("#typeFilters .pill").forEach(function (s) { s.classList.remove("on"); });
-    el.classList.add("on");
-    renderResults();
-  });
-});
+document.getElementById("modelSearch").addEventListener("input", function (e) { state.query = e.target.value; state.page = 1; renderModels(); });
+document.getElementById("modelSort").addEventListener("change", function (e) { state.sort = e.target.value; state.page = 1; renderModels(); });
 document.querySelectorAll("#payoutRow span").forEach(function (el) {
   el.addEventListener("click", function () {
     payout = el.getAttribute("data-pay");
@@ -266,8 +451,13 @@ document.querySelectorAll("#payoutRow span").forEach(function (el) {
   });
 });
 
-renderResults();
+renderDropdowns();
+renderModels();
+renderSelected();
 renderCart();
+// Model panel starts open, like in the screenshot.
+document.getElementById("opt-model").classList.add("open");
+document.getElementById("chev-model").textContent = "⌃";
 </script>
 
 </body>
