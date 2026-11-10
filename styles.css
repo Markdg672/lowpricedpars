@@ -153,3 +153,21 @@ footer { padding: 36px 0 52px; color: #6B7A70; font-size: 16px; }
 .progress span.on { background: #2F6B4C; color: #fff; border-color: #2F6B4C; }
 .field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
 @media (max-width: 620px) { .field-row { grid-template-columns: 1fr; } }
+
+/* Trade-in product search */
+.search-bar { margin: 22px 0 12px; }
+.search-bar input { font-size: 19px; padding: 16px 18px; border-radius: 999px; border: 2px solid #2F6B4C; }
+.pill-row { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 10px; }
+.pill {
+  background: #EAF1EA; color: #2F4A3A; font-weight: 700; font-size: 15px;
+  border: 1.5px solid #CBDACD; border-radius: 999px; padding: 8px 15px; cursor: pointer; font-family: inherit;
+}
+.pill:hover { background: #DDEADF; }
+.pill.on { background: #2F6B4C; color: #fff; border-color: #2F6B4C; }
+.trade-layout { display: grid; grid-template-columns: 1.5fr 1fr; gap: 20px; align-items: start; margin-top: 14px; }
+@media (max-width: 860px) { .trade-layout { grid-template-columns: 1fr; } }
+.results { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+@media (max-width: 620px) { .results { grid-template-columns: 1fr; } }
+.result-card h3 { font-size: 19px; }
+.cart-box { position: sticky; top: 90px; }
+@media (max-width: 860px) { .cart-box { position: static; } }
