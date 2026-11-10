@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Get an estimate — LowPricedPars</title>
-<meta name="description" content="Get an estimate for your used golf clubs. Pick club type, brand, model, and condition.">
+<meta name="description" content="Find what your used golf clubs are worth with LPP. Add clubs, pick condition, see your total instantly.">
 <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -24,26 +24,33 @@
 <main>
   <div class="wrap-wide">
     <section>
-      <span class="eyebrow">STEP 1 OF 2 — ESTIMATE</span>
-      <h1>What will we pay for your club?</h1>
-      <p class="lead">No typing — just click. Pick a brand, and your models pop up. Pick a model, then your condition.</p>
+      <span class="eyebrow">LPP VALUE GUIDE</span>
+      <h1>Find what your clubs are worth</h1>
+      <p class="lead">Works like the PGA Value Guide and 2nd Swing: pick the club, pick the condition, see the value — then add it to your trade-in. No typing brand names. Click, and the models pop up.</p>
 
       <div class="progress">
-        <span class="on">1. Club details</span>
-        <span class="on">2. Condition</span>
-        <span>3. Your estimate</span>
+        <span class="on">01 · Add your clubs</span>
+        <span>02 · Choose payout</span>
+        <span>03 · Ship it</span>
+        <span>04 · Get paid</span>
       </div>
 
       <div class="grid">
         <div class="card">
-          <h2 style="font-size:24px;">Tell us about the club</h2>
+          <h2 style="font-size:24px;">Add a club</h2>
+
+          <label for="category">Category</label>
+          <select id="category">
+            <option>Golf Club</option>
+            <option>Accessory — coming soon</option>
+          </select>
 
           <label for="type">Club type</label>
           <select id="type">
             <option>Driver</option>
-            <option>Iron set</option>
-            <option>Hybrid</option>
             <option>Fairway wood</option>
+            <option>Hybrid</option>
+            <option>Irons</option>
             <option>Wedge</option>
             <option>Putter</option>
             <option>Full set</option>
@@ -66,35 +73,42 @@
             <option value="">Pick a brand first…</option>
           </select>
 
-          <label for="condition">Condition — be honest, it helps</label>
+          <label for="condition">Condition — be honest, it sets the price</label>
           <select id="condition">
-            <option>New — never used, looks new</option>
-            <option>Like new — light use, very few marks</option>
-            <option>Average — normal use, some scuffs</option>
-            <option>Poor — heavy wear or damage</option>
+            <option value="new">New — never used, or looks new</option>
+            <option value="average" selected>Average — normal use, some scuffs</option>
+            <option value="below">Below Average — heavy wear or damage</option>
           </select>
+          <p class="small" style="margin:4px 0 0;">Same 3 grades 2nd Swing uses: New, Average, Below Average.</p>
 
           <label for="pgaValue" style="margin-top:18px;">Your PGA Value Guide value ($)</label>
-          <p class="small" style="margin:4px 0 8px;">We can't pull PGA's prices into this site — no feed for that. So check your value there, then type that one number in here.</p>
-          <p style="margin:0 0 10px;"><a class="btn btn-gold" href="https://valueguide.pga.com" target="_blank" rel="noopener">Check your PGA value →</a></p>
+          <p class="small" style="margin:4px 0 8px;">This is the starting point, like PGA does. Look up the club's value, type that one number in here, and LPP works out what it will pay from it.</p>
           <input id="pgaValue" type="number" min="0" placeholder="Example: 200" inputmode="numeric">
 
-          <p class="small" style="margin-top:14px;">Tip: if you're between two conditions, pick the lower one. The estimate will hold up better after inspection.</p>
+          <p style="margin-top:20px;"><button class="btn" type="button" onclick="addClub()">Add this club to my trade-in →</button></p>
+          <p class="small">Add as many clubs as you want — they all go in the same trade-in, and the total updates instantly.</p>
         </div>
 
         <div>
           <div class="calc-box">
-            <h2 style="font-size:24px;">Your estimate</h2>
-            <p><strong id="estimateLabel">Enter your PGA value to see it.</strong></p>
-            <div class="price-big" id="estimatePrice" style="color:#2F6B4C;">$ —</div>
-            <p id="estimateDetail">Pick your club on the left, check your PGA value, type it in, and this box fills in.</p>
-            <p class="small">This is an estimate only. Final price is set after we inspect the club in hand.</p>
+            <h2 style="font-size:24px;">Your trade-in</h2>
+            <div id="cartList"><p><strong>No clubs added yet.</strong></p><p>Add your first club on the left and it shows up here.</p></div>
+            <div class="price-big" id="estimatePrice" style="color:#2F6B4C;">$0</div>
+            <p id="estimateDetail">Your total, before payout choice. Estimate only — final price after LPP inspects the club in hand.</p>
+
+            <label style="text-align:left;">02 · Choose payout</label>
+            <div class="progress" id="payoutRow" style="justify-content:center;">
+              <span class="on" data-pay="Cash">Cash</span>
+              <span data-pay="PayPal">PayPal</span>
+              <span data-pay="Check">Check</span>
+            </div>
+            <p class="small" id="payoutNote">Cash pays the full estimate. PayPal and Check pay the same for now — LPP to confirm if one pays less.</p>
           </div>
 
           <div class="card" style="margin-top:16px;">
             <h3>What changes the price?</h3>
             <p>• <strong>Brand + model</strong> — newer, popular models pay more.<br>
-            • <strong>Condition</strong> — the biggest factor. A mint club pays a lot more than a worn one.<br>
+            • <strong>Condition</strong> — the biggest factor. New pays full value, Average pays 80%, Below Average pays 60%. (LPP to confirm these %s.)<br>
             • <strong>Completeness</strong> — full iron sets pay more than missing pieces.<br>
             • <strong>Authenticity</strong> — fake, altered, or stolen clubs pay $0.</p>
           </div>
@@ -103,6 +117,14 @@
 
       <div class="note note-green" style="margin-top:20px;">
         <strong>How we protect LPP — and you:</strong> We don't pay before inspection. If your club arrives in worse condition than you said, we'll send a revised, lower offer. You can take it, or get the club back. If it's fake or the wrong club, we pay $0.
+      </div>
+
+      <h2 style="margin-top:36px;">How it works — the 2nd Swing way, LPP version</h2>
+      <div class="grid">
+        <div class="card"><span class="step-num">01</span><h3>Add your clubs</h3><p>Search by brand, model, or club type and add everything to the same trade-in. No limit on how many you add.</p></div>
+        <div class="card"><span class="step-num">02</span><h3>Choose payout</h3><p>Cash, PayPal, or Check. Your total updates instantly as you switch, so you see what each option pays before you go on.</p></div>
+        <div class="card"><span class="step-num">03</span><h3>Ship it</h3><p>Send your clubs to LPP. Shipping label and packing details are coming soon — LPP to confirm.</p></div>
+        <div class="card"><span class="step-num">04</span><h3>Get paid</h3><p>We inspect your clubs in hand, then we pay. If the condition matches what you said, you get the estimated price.</p></div>
       </div>
 
       <p style="margin-top:22px;">
@@ -122,9 +144,13 @@
 </footer>
 
 <script>
-// Change this one number if LPP pays less than the full PGA value.
-// 100 = pays full PGA value. 70 = pays 70% of PGA value.
+// LPP's own price rules — change these numbers, the site follows.
+// LPP_PAYS_PERCENT: 100 = pays full PGA value. 70 = pays 70% of PGA value.
 var LPP_PAYS_PERCENT = 100;
+// Condition multipliers — PLACEHOLDER, LPP to confirm.
+// New = full value, Average = 80%, Below Average = 60%.
+var CONDITION_PAY = { "new": 1.0, "average": 0.8, "below": 0.6 };
+var CONDITION_LABEL = { "new": "New", "average": "Average", "below": "Below Average" };
 
 var MODELS = {
   "Titleist": ["TSR2 Driver", "TSR3 Driver", "TSR4 Driver", "TSi2 Driver", "TSi3 Driver", "GT2 Driver", "GT3 Driver", "GT4 Driver", "AP2 Irons", "T100 Irons", "T150 Irons", "T200 Irons", "Vokey SM9 Wedge", "Vokey SM10 Wedge", "Scotty Cameron Putter", "Other Titleist model"],
@@ -136,12 +162,12 @@ var MODELS = {
   "Other": ["Other model — tell us in the sell form"]
 };
 
+var cart = [];
+var payout = "Cash";
+
 var brandEl = document.getElementById("brand");
 var modelEl = document.getElementById("model");
 var pgaEl = document.getElementById("pgaValue");
-var priceEl = document.getElementById("estimatePrice");
-var labelEl = document.getElementById("estimateLabel");
-var detailEl = document.getElementById("estimateDetail");
 
 brandEl.addEventListener("change", function () {
   var list = MODELS[brandEl.value] || [];
@@ -166,20 +192,53 @@ brandEl.addEventListener("change", function () {
   });
 });
 
-function updateEstimate() {
+document.querySelectorAll("#payoutRow span").forEach(function (el) {
+  el.addEventListener("click", function () {
+    payout = el.getAttribute("data-pay");
+    document.querySelectorAll("#payoutRow span").forEach(function (s) { s.classList.remove("on"); });
+    el.classList.add("on");
+    document.getElementById("payoutNote").textContent = payout + " pays the full estimate for now — LPP to confirm if one method pays less.";
+    renderCart();
+  });
+});
+
+function addClub() {
   var v = parseFloat(pgaEl.value);
-  if (!v || v <= 0) {
-    priceEl.textContent = "$ —";
-    labelEl.textContent = "Enter your PGA value to see it.";
-    detailEl.textContent = "Pick your club on the left, check your PGA value, type it in, and this box fills in.";
+  var brand = brandEl.value;
+  var model = modelEl.value;
+  var cond = document.getElementById("condition").value;
+  var type = document.getElementById("type").value;
+  if (!brand) { alert("Pick a brand first."); return; }
+  if (!model) { alert("Pick a model."); return; }
+  if (!v || v <= 0) { alert("Type in the PGA value first."); return; }
+  var value = Math.round(v * LPP_PAYS_PERCENT / 100 * CONDITION_PAY[cond]);
+  cart.push({ name: brand + " " + model, type: type, cond: CONDITION_LABEL[cond], value: value });
+  pgaEl.value = "";
+  renderCart();
+}
+
+function renderCart() {
+  var listEl = document.getElementById("cartList");
+  var priceEl = document.getElementById("estimatePrice");
+  var detailEl = document.getElementById("estimateDetail");
+  if (!cart.length) {
+    listEl.innerHTML = "<p><strong>No clubs added yet.</strong></p><p>Add your first club on the left and it shows up here.</p>";
+    priceEl.textContent = "$0";
+    detailEl.textContent = "Your total, before payout choice. Estimate only — final price after LPP inspects the club in hand.";
     return;
   }
-  var est = Math.round(v * LPP_PAYS_PERCENT / 100);
-  priceEl.textContent = "$" + est;
-  labelEl.textContent = "Your estimate from LowPricedPars";
-  detailEl.textContent = "Based on the PGA value you entered ($" + v + "). Final price after LPP inspects the club.";
+  var total = 0;
+  var html = "";
+  cart.forEach(function (c, i) {
+    total += c.value;
+    html += "<div class=\"mock-line\" style=\"text-align:left;\"><span>" + c.name + " · " + c.cond + "</span><strong>$" + c.value + " <a href=\"#\" onclick=\"removeClub(" + i + ");return false;\" style=\"color:#C9A24B;\">✕</a></strong></div>";
+  });
+  listEl.innerHTML = html;
+  priceEl.textContent = "$" + total;
+  detailEl.textContent = cart.length + (cart.length === 1 ? " club" : " clubs") + " in your trade-in · " + payout + " · Estimate only — final price after LPP inspects in hand.";
 }
-pgaEl.addEventListener("input", updateEstimate);
+
+function removeClub(i) { cart.splice(i, 1); renderCart(); }
 </script>
 
 </body>
