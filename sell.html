@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sell your clubs — LowPricedPars</title>
+<meta name="description" content="Sell your used golf clubs to LowPricedPars. Send your details and photos.">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<header>
+  <div class="wrap-wide header-inner">
+    <a class="logo" href="index.html">LowPriced<span>Pars</span><span class="logo-dot">.</span></a>
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="estimate.html">Get an estimate</a>
+      <a href="sell.html" class="active">Sell your clubs</a>
+      <a href="index.html#how">How it works</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <div class="wrap-wide">
+    <section>
+      <span class="eyebrow">STEP 2 OF 2 — SELL FORM</span>
+      <h1>Sell your clubs</h1>
+      <p class="lead">Fill this out and we'll get back to you with next steps for shipping. Photos make it faster — and fairer.</p>
+
+      <div class="progress">
+        <span>1. Club details ✓</span>
+        <span>2. Condition ✓</span>
+        <span class="on">3. Your details</span>
+      </div>
+
+      <div class="grid">
+        <div class="card">
+          <h2 style="font-size:24px;">About you</h2>
+          <form onsubmit="event.preventDefault(); document.getElementById('form-note').style.display='block';">
+            <label for="name">Your name</label>
+            <input id="name" type="text" placeholder="Your full name" autocomplete="name">
+
+            <div class="field-row">
+              <div>
+                <label for="phone">Phone</label>
+                <input id="phone" type="tel" placeholder="(555) 123-4567" autocomplete="tel">
+              </div>
+              <div>
+                <label for="email">Email</label>
+                <input id="email" type="email" placeholder="you@email.com" autocomplete="email">
+              </div>
+            </div>
+
+            <label for="pay">How do you want to get paid?</label>
+            <select id="pay">
+              <option>Cash / bank — coming from Carson</option>
+              <option>PayPal — coming from Carson</option>
+              <option>Check — coming from Carson</option>
+            </select>
+            <p class="small">Payment method is still to confirm with Carson. We'll update this list once he picks.</p>
+
+            <label class="check"><input type="checkbox" style="width:auto;"> I own this club, it is authentic, it is not stolen, and the condition I picked is honest.</label>
+
+            <p style="margin-top:20px;"><button class="btn" type="submit">Send my club details →</button></p>
+            <p id="form-note" class="note" style="display:none;">Thanks — this is a preview, so this form doesn't send yet. Carson's real contact / send details are coming next.</p>
+          </form>
+        </div>
+
+        <div>
+          <div class="card">
+            <h2 style="font-size:24px;">About the club</h2>
+            <label for="type2">Club type</label>
+            <select id="type2">
+              <option>Driver</option>
+              <option>Iron set</option>
+              <option>Hybrid</option>
+              <option>Fairway wood</option>
+              <option>Wedge</option>
+              <option>Putter</option>
+              <option>Full set</option>
+            </select>
+
+            <label for="brand2">Brand and model</label>
+            <input id="brand2" type="text" placeholder="Example: Titleist TSR3 Driver">
+
+            <label for="serial">Serial number (if you can find it)</label>
+            <input id="serial" type="text" placeholder="On the hosel / shaft — helps us check it's real">
+
+            <label for="notes">Anything we should know?</label>
+            <textarea id="notes" rows="3" placeholder="Dents, scratches, new grip, missing headcover…"></textarea>
+          </div>
+
+          <div class="card" style="margin-top:16px;">
+            <h3>Photos — send these 4</h3>
+            <p>1. <strong>Face</strong> — straight on<br>
+            2. <strong>Sole</strong> — bottom of the head<br>
+            3. <strong>Serial number</strong> — close-up, in focus<br>
+            4. <strong>Shaft label</strong> — brand, flex, length</p>
+            <p class="small">In this preview, photo upload isn't live yet. For now, keep the photos ready to send when Carson replies. Good light, plain background, no filters.</p>
+          </div>
+
+          <div class="note" style="margin-top:16px;">
+            <strong>What happens next?</strong><br>
+            1. We review your details + photos.<br>
+            2. We confirm the estimate and shipping.<br>
+            3. You ship it in. We inspect it.<br>
+            4. We pay — after inspection.
+          </div>
+        </div>
+      </div>
+
+      <p style="margin-top:22px;">
+        <a class="btn btn-ghost" href="estimate.html">← Back to estimate</a>
+        <a class="btn btn-ghost" href="index.html">Back home</a>
+      </p>
+    </section>
+  </div>
+</main>
+
+<footer>
+  <div class="wrap-wide">
+    <p><strong>LowPricedPars</strong> — We buy your used golf clubs.</p>
+    <p class="small">Preview — contact, shipping, and payment details coming soon from Carson.</p>
+  </div>
+</footer>
+
+</body>
+</html>

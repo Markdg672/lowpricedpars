@@ -5,266 +5,108 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>LowPricedPars — We Buy Your Used Golf Clubs</title>
 <meta name="description" content="LowPricedPars buys used golf clubs. Get an estimate, send photos, ship it in, get paid after inspection.">
-<style>
-  * { box-sizing: border-box; }
-  body {
-    margin: 0;
-    background: #F7F6F1;
-    color: #24312A;
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-    font-size: 18px;
-    line-height: 1.65;
-  }
-  a { color: #2E6B4F; }
-  .wrap { max-width: 860px; margin: 0 auto; padding: 0 20px; }
-  header {
-    background: #F7F6F1;
-    border-bottom: 1px solid #E3E6E0;
-    padding: 18px 0;
-    position: sticky; top: 0;
-  }
-  .header-inner { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; }
-  .logo { font-size: 24px; font-weight: 800; color: #24312A; text-decoration: none; letter-spacing: -0.3px; }
-  .logo span { color: #2E6B4F; }
-  nav a { margin-left: 18px; font-size: 16px; text-decoration: none; color: #4A5A50; }
-  nav a:hover { color: #2E6B4F; text-decoration: underline; }
-  .hero { padding: 56px 0 36px; text-align: left; }
-  .eyebrow {
-    display: inline-block;
-    background: #E6EFE9;
-    color: #2E6B4F;
-    font-size: 14px; font-weight: 700;
-    letter-spacing: 0.4px;
-    padding: 6px 12px; border-radius: 999px;
-    margin-bottom: 16px;
-  }
-  h1 { font-size: 40px; line-height: 1.15; margin: 0 0 14px; letter-spacing: -0.8px; }
-  h2 { font-size: 28px; line-height: 1.25; margin: 0 0 12px; letter-spacing: -0.4px; }
-  h3 { font-size: 20px; margin: 0 0 8px; }
-  p { margin: 0 0 16px; color: #3D4A42; }
-  .lead { font-size: 20px; color: #3D4A42; max-width: 640px; }
-  .btn {
-    display: inline-block;
-    background: #2E6B4F; color: #fff;
-    text-decoration: none;
-    font-weight: 700; font-size: 18px;
-    padding: 14px 26px; border-radius: 12px;
-    border: 0; cursor: pointer;
-  }
-  .btn:hover { background: #265A42; }
-  .btn-secondary {
-    background: #fff; color: #2E6B4F;
-    border: 2px solid #2E6B4F;
-    margin-left: 12px;
-  }
-  .btn-secondary:hover { background: #E6EFE9; }
-  section { padding: 36px 0; }
-  .soft { background: #EDF1EC; border-top: 1px solid #E3E6E0; border-bottom: 1px solid #E3E6E0; }
-  .card {
-    background: #fff;
-    border: 1px solid #E3E6E0;
-    border-radius: 16px;
-    padding: 22px;
-  }
-  .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
-  @media (max-width: 640px) { .grid { grid-template-columns: 1fr; } h1 { font-size: 32px; } .btn-secondary { margin-left: 0; margin-top: 10px; } }
-  .step-num {
-    display: inline-block; width: 36px; height: 36px; line-height: 36px;
-    text-align: center; border-radius: 50%;
-    background: #2E6B4F; color: #fff; font-weight: 800; margin-bottom: 10px;
-  }
-  .tag {
-    display: inline-block; background: #F0EDE4; color: #6B5E3A;
-    font-size: 14px; font-weight: 700; padding: 5px 10px; border-radius: 999px; margin: 0 6px 8px 0;
-  }
-  .calc-box {
-    background: #fff;
-    border: 2px dashed #9DB8A6;
-    border-radius: 16px;
-    padding: 26px;
-    text-align: center;
-  }
-  .calc-box p { margin-bottom: 8px; }
-  label { display: block; font-weight: 700; margin: 16px 0 6px; font-size: 16px; }
-  input, select, textarea {
-    width: 100%; padding: 13px 14px;
-    font-size: 17px; font-family: inherit;
-    border: 1px solid #C9D1C9; border-radius: 10px;
-    background: #fff; color: #24312A;
-  }
-  input:focus, select:focus, textarea:focus { outline: 3px solid #BFD8C6; border-color: #2E6B4F; }
-  .note {
-    background: #FFF8E6; border: 1px solid #E8D9A8;
-    border-radius: 12px; padding: 16px 18px; font-size: 16px; color: #5A4E2A;
-  }
-  .check { font-weight: 400; font-size: 16px; }
-  details { background: #fff; border: 1px solid #E3E6E0; border-radius: 12px; padding: 16px 18px; margin-bottom: 12px; }
-  summary { font-weight: 700; cursor: pointer; font-size: 18px; }
-  footer { padding: 32px 0 48px; color: #6B7A70; font-size: 16px; }
-  .small { font-size: 15px; color: #6B7A70; }
-</style>
+<link rel="stylesheet" href="styles.css">
 </head>
 <body>
 
 <header>
-  <div class="wrap header-inner">
-    <a class="logo" href="#">LowPriced<span>Pars</span></a>
+  <div class="wrap-wide header-inner">
+    <a class="logo" href="index.html">LowPriced<span>Pars</span><span class="logo-dot">.</span></a>
     <nav>
+      <a href="index.html" class="active">Home</a>
+      <a href="estimate.html">Get an estimate</a>
+      <a href="sell.html">Sell your clubs</a>
       <a href="#how">How it works</a>
-      <a href="#buy">What we buy</a>
-      <a href="#condition">Condition</a>
-      <a href="#sell">Sell your clubs</a>
     </nav>
   </div>
 </header>
 
 <main>
-  <div class="wrap">
+  <div class="wrap-wide">
     <div class="hero">
-      <span class="eyebrow">WE BUY USED GOLF CLUBS</span>
-      <h1>Sell your clubs.<br>Get paid fast.</h1>
-      <p class="lead">LowPricedPars buys your used golf clubs — drivers, irons, putters, and full sets. Get an estimate, send photos, ship it in, and get paid after we check it.</p>
-      <p>
-        <a class="btn" href="#calculator">Get an estimate</a>
-        <a class="btn btn-secondary" href="#how">How it works</a>
-      </p>
-      <p class="small">No shop. We buy from you — we don't sell clubs on this site.</p>
+      <div class="hero-grid">
+        <div>
+          <span class="eyebrow">WE BUY USED GOLF CLUBS ⛳</span>
+          <h1>Sell your clubs.<br>Get paid fast.</h1>
+          <p class="lead">Got clubs sitting in the garage? LowPricedPars buys them — drivers, irons, putters, and full sets. No listing, no haggling, no waiting around.</p>
+          <p>
+            <a class="btn" href="estimate.html">Get an estimate →</a>
+            <a class="btn btn-ghost" href="#how">How it works</a>
+          </p>
+          <p class="small">Estimate only — final price after we check your club in hand. We buy from you. We don't sell clubs on this site.</p>
+        </div>
+        <div class="mock-card">
+          <p style="margin-bottom:4px;">YOUR ESTIMATE, AT A GLANCE</p>
+          <h3>Titleist driver — like new</h3>
+          <div class="mock-line"><span>Club</span><strong>Driver</strong></div>
+          <div class="mock-line"><span>Condition</span><strong>Like new</strong></div>
+          <div class="mock-line"><span>We'll pay</span><strong>$ —</strong></div>
+          <p style="margin-top:14px;">Prices from Carson are coming soon. This is what your estimate card will look like.</p>
+          <div class="price-big">$ —</div>
+          <p class="small" style="color:#D8E2D5;">No pay until inspection. If it's worse than you said, we send a revised offer.</p>
+        </div>
+      </div>
     </div>
   </div>
 
-  <section id="calculator">
-    <div class="wrap">
-      <div class="calc-box">
-        <h2>Trade-in calculator</h2>
-        <p><strong>Coming soon.</strong></p>
-        <p>Carson's prices are coming. Once they're in, you'll pick your club type, brand, model, and condition here — and see what he'll pay, right away.</p>
-        <p class="small">For now, use the sell form below to send your club details and photos.</p>
-      </div>
-    </div>
-  </section>
-
   <section id="how" class="soft">
-    <div class="wrap">
-      <h2>How it works</h2>
-      <p>Simple, in 4 steps. No guessing.</p>
+    <div class="wrap-wide">
+      <h2>How it works — easy as 1, 2, 3, 4</h2>
+      <p>Four steps, and you're done. We keep it simple on purpose.</p>
       <div class="grid">
-        <div class="card"><span class="step-num">1</span><h3>Get an estimate</h3><p>Pick your club type, brand, model, and condition. See an estimate of what we'll pay.</p></div>
-        <div class="card"><span class="step-num">2</span><h3>Send photos</h3><p>Send clear photos — face, sole, serial number, and shaft. That helps us check it before you ship.</p></div>
-        <div class="card"><span class="step-num">3</span><h3>Ship it in</h3><p>Send the club to us. We'll confirm we got it and check it in hand.</p></div>
+        <div class="card"><span class="step-num">1</span><h3>Get an estimate</h3><p>Pick your club type, brand, model, and condition. See what we'll pay, right away.</p><p><a href="estimate.html"><strong>Go to the estimator →</strong></a></p></div>
+        <div class="card"><span class="step-num">2</span><h3>Send photos</h3><p>Face, sole, serial number, and shaft. Clear photos mean a faster, fairer estimate — and help us spot fakes early.</p></div>
+        <div class="card"><span class="step-num">3</span><h3>Ship it in</h3><p>Send the club to us. We'll confirm it arrived and check it in hand.</p></div>
         <div class="card"><span class="step-num">4</span><h3>Get paid</h3><p>We pay after inspection. If the condition matches what you said, you get the estimated price.</p></div>
       </div>
-      <p class="small" style="margin-top:16px;">Estimate only — final price is set after inspection. See below.</p>
     </div>
   </section>
 
-  <section id="buy">
-    <div class="wrap">
+  <section>
+    <div class="wrap-wide">
       <h2>What we buy</h2>
-      <p>We buy used clubs in playable condition.</p>
+      <p>Used clubs in playable condition. That's it.</p>
       <p>
-        <span class="tag">Drivers</span>
-        <span class="tag">Iron sets</span>
-        <span class="tag">Hybrids</span>
-        <span class="tag">Fairway woods</span>
-        <span class="tag">Wedges</span>
-        <span class="tag">Putters</span>
-        <span class="tag">Full sets</span>
+        <span class="tag">Drivers</span><span class="tag">Iron sets</span><span class="tag">Hybrids</span><span class="tag">Fairway woods</span><span class="tag">Wedges</span><span class="tag">Putters</span><span class="tag">Full sets</span>
       </p>
-      <p class="small">Brands, prices, and max payout coming soon from Carson.</p>
+      <div class="grid3" style="margin-top:18px;">
+        <div class="card"><h3>Fair prices</h3><p>We use the PGA Value Guide as a starting point, then Carson sets his price. No lowball surprise after you ship.</p></div>
+        <div class="card"><h3>No pay before inspection</h3><p>That protects you and Carson. We check it first, then we pay.</p></div>
+        <div class="card"><h3>Honest condition</h3><p>Pick it honestly, send good photos, and the estimate holds. If it's worse, we'll tell you — with a revised offer, not a silent cut.</p></div>
+      </div>
     </div>
   </section>
 
-  <section id="condition" class="soft">
-    <div class="wrap">
-      <h2>Condition guide</h2>
-      <p>Pick the one that matches your club honestly. Photos help.</p>
+  <section class="cream">
+    <div class="wrap-wide">
+      <h2>Condition, in plain words</h2>
+      <p>Not sure what to pick? Use this.</p>
       <div class="grid">
         <div class="card"><h3>New</h3><p>Never used, or used once. Looks new.</p></div>
         <div class="card"><h3>Like new</h3><p>Light use. Very few marks. Works perfectly.</p></div>
         <div class="card"><h3>Average</h3><p>Normal use. Some scuffs and wear. Works fine.</p></div>
-        <div class="card"><h3>Poor</h3><p>Heavy wear, scratches, or damage. Still works, but clearly worn.</p></div>
+        <div class="card"><h3>Poor</h3><p>Heavy wear or damage. Still works, but clearly worn.</p></div>
       </div>
+      <p style="margin-top:18px;"><a class="btn btn-gold" href="estimate.html">Start my estimate →</a></p>
     </div>
   </section>
 
   <section>
-    <div class="wrap">
-      <h2>Fair and protected — for both sides</h2>
-      <div class="card">
-        <p><strong>Estimate only.</strong> The calculator gives an estimate. The final price is set after we inspect the club in hand.</p>
-        <p><strong>If it arrives in worse condition</strong> than you said, we'll send a revised, lower offer. You can take it, or get the club back.</p>
-        <p><strong>If it's fake, the wrong club, or stolen,</strong> we pay $0. You must own the club, and it must be authentic.</p>
-        <p><strong>We don't pay before inspection.</strong> That's how you — and Carson — stay protected.</p>
-      </div>
-      <div class="note" style="margin-top:16px;">
-        <strong>Please note:</strong> Automatic photo checks can flag a suspicious club, but they can't prove a club is real. The final check is always in hand.
-      </div>
-    </div>
-  </section>
-
-  <section id="sell" class="soft">
-    <div class="wrap">
-      <h2>Sell your clubs</h2>
-      <p>Fill this out. Photos help us give you a faster, fairer estimate.</p>
-      <div class="card">
-        <form onsubmit="event.preventDefault(); document.getElementById('form-note').style.display='block';">
-          <label for="name">Your name</label>
-          <input id="name" type="text" placeholder="Your full name">
-
-          <label for="contact">Phone or email</label>
-          <input id="contact" type="text" placeholder="How can we reach you?">
-
-          <label for="type">Club type</label>
-          <select id="type">
-            <option>Driver</option>
-            <option>Iron set</option>
-            <option>Hybrid</option>
-            <option>Fairway wood</option>
-            <option>Wedge</option>
-            <option>Putter</option>
-            <option>Full set</option>
-          </select>
-
-          <label for="brand">Brand and model</label>
-          <input id="brand" type="text" placeholder="Example: Titleist TSR3 Driver">
-
-          <label for="condition">Condition</label>
-          <select id="condition">
-            <option>New</option>
-            <option>Like new</option>
-            <option>Average</option>
-            <option>Poor</option>
-          </select>
-
-          <label for="photos">Photos</label>
-          <p class="small">Send photos of the face, sole, serial number, and shaft. In this preview, please attach them when you contact us — photo upload is coming next.</p>
-
-          <label class="check"><input type="checkbox" style="width:auto;"> I own this club, it is authentic, it is not stolen, and the condition I picked is honest.</label>
-
-          <p style="margin-top:20px;"><button class="btn" type="submit">Send my club details</button></p>
-          <p id="form-note" class="note" style="display:none;">Thanks — this is a preview, so this form doesn't send yet. The real send / contact details from Carson are coming next.</p>
-        </form>
-      </div>
-      <!-- TODO for Carson / Mark: add Carson's real contact (phone / email), max pay per club, how he pays, shipping / drop-off, and how fast he pays after inspection. -->
-    </div>
-  </section>
-
-  <section>
-    <div class="wrap">
-      <h2>Questions</h2>
-      <details><summary>How fast do I get paid?</summary><p>After we receive and inspect your club. The exact timing is coming from Carson.</p></details>
-      <details><summary>What if my club arrives in worse condition than I said?</summary><p>We'll send a revised, lower offer. You can accept it, or get the club back.</p></details>
+    <div class="wrap-wide">
+      <h2>Questions, answered straight</h2>
+      <details><summary>How fast do I get paid?</summary><p>After we receive and inspect your club. Exact timing is coming from Carson.</p></details>
+      <details><summary>What if my club arrives in worse condition?</summary><p>We'll send a revised, lower offer. You can accept it, or get the club back.</p></details>
       <details><summary>What if my club is fake?</summary><p>We pay $0 for fake, stolen, or wrong clubs. Photos help us flag it early, but the final check is in hand.</p></details>
-      <details><summary>Do you buy all brands?</summary><p>We buy most major brands in playable condition. The full list and prices are coming soon.</p></details>
-      <details><summary>How do I ship my clubs?</summary><p>Shipping details are coming from Carson — prepaid label or drop-off.</p></details>
+      <details><summary>Can a photo prove a club is real?</summary><p>No — not on its own. AI can flag something suspicious, but it can't certify a club. That's why we inspect before we pay.</p></details>
     </div>
   </section>
 </main>
 
 <footer>
-  <div class="wrap">
+  <div class="wrap-wide">
     <p><strong>LowPricedPars</strong> — We buy your used golf clubs.</p>
-    <p class="small">Preview outline — calculator, prices, contact, and shipping details coming soon from Carson.</p>
+    <p class="small">Preview — calculator prices, contact, and shipping details coming soon from Carson.</p>
+    <p><a href="estimate.html">Get an estimate</a> &nbsp;·&nbsp; <a href="sell.html">Sell your clubs</a></p>
   </div>
 </footer>
 
