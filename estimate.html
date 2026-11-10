@@ -102,7 +102,7 @@
       </div>
 
       <div class="note note-green" style="margin-top:20px;">
-        <strong>How we protect Carson — and you:</strong> We don't pay before inspection. If your club arrives in worse condition than you said, we'll send a revised, lower offer. You can take it, or get the club back. If it's fake or the wrong club, we pay $0.
+        <strong>How we protect LPP — and you:</strong> We don't pay before inspection. If your club arrives in worse condition than you said, we'll send a revised, lower offer. You can take it, or get the club back. If it's fake or the wrong club, we pay $0.
       </div>
 
       <p style="margin-top:22px;">
@@ -122,9 +122,9 @@
 </footer>
 
 <script>
-// Change this one number if Carson pays less than the full PGA value.
+// Change this one number if LPP pays less than the full PGA value.
 // 100 = pays full PGA value. 70 = pays 70% of PGA value.
-var CARSON_PAYS_PERCENT = 100;
+var LPP_PAYS_PERCENT = 100;
 
 var MODELS = {
   "Titleist": ["TSR2 Driver", "TSR3 Driver", "TSR4 Driver", "TSi2 Driver", "TSi3 Driver", "GT2 Driver", "GT3 Driver", "GT4 Driver", "AP2 Irons", "T100 Irons", "T150 Irons", "T200 Irons", "Vokey SM9 Wedge", "Vokey SM10 Wedge", "Scotty Cameron Putter", "Other Titleist model"],
@@ -174,10 +174,10 @@ function updateEstimate() {
     detailEl.textContent = "Pick your club on the left, check your PGA value, type it in, and this box fills in.";
     return;
   }
-  var est = Math.round(v * CARSON_PAYS_PERCENT / 100);
+  var est = Math.round(v * LPP_PAYS_PERCENT / 100);
   priceEl.textContent = "$" + est;
   labelEl.textContent = "Your estimate from LowPricedPars";
-  detailEl.textContent = "Based on the PGA value you entered ($" + v + "). Final price after Carson inspects the club.";
+  detailEl.textContent = "Based on the PGA value you entered ($" + v + "). Final price after LPP inspects the club.";
 }
 pgaEl.addEventListener("input", updateEstimate);
 </script>
