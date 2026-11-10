@@ -52,10 +52,13 @@ nav a.cta:hover { background: #B8943F; color: #fff; }
 .hero { padding: 52px 0 28px; }
 .hero-photo {
   background:
-    linear-gradient(90deg, rgba(10,25,18,0.82) 0%, rgba(10,25,18,0.62) 42%, rgba(10,25,18,0.18) 68%, rgba(10,25,18,0.05) 100%),
-    url("hero.jpg") center 30% / cover no-repeat;
+    linear-gradient(90deg, rgba(10,25,18,0.82) 0%, rgba(10,25,18,0.60) 38%, rgba(10,25,18,0.12) 60%, rgba(10,25,18,0) 85%),
+    url("hero.jpg") 82% 30% / cover no-repeat;
   border-radius: 26px;
   padding: 44px 36px;
+  min-height: 460px;
+  display: flex;
+  align-items: center;
   color: #fff;
   box-shadow: 0 18px 36px rgba(16,41,30,0.28);
 }
@@ -63,8 +66,8 @@ nav a.cta:hover { background: #B8943F; color: #fff; }
 .hero-photo p { color: #F1F5EE; text-shadow: 0 1px 12px rgba(0,0,0,0.4); }
 .hero-photo .small { color: #E2EADF; }
 .hero-photo .eyebrow { background: #C9A24B; color: #1E2B24; text-shadow: none; }
-.hero-grid { display: grid; grid-template-columns: 1.15fr 0.85fr; gap: 32px; align-items: center; }
-@media (max-width: 720px) { .hero-grid { grid-template-columns: 1fr; } }
+.hero-grid { display: grid; grid-template-columns: 1fr; gap: 32px; align-items: center; max-width: 560px; }
+@media (max-width: 720px) { .hero-photo { min-height: 520px; background-position: 88% 30%; align-items: flex-start; } }
 .eyebrow {
   display: inline-block;
   background: #2F6B4C; color: #fff;
