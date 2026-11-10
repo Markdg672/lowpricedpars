@@ -180,6 +180,15 @@
 // Average pays 80%, Below Average pays 60%. Change the numbers in sampleValue(), the whole page follows.
 var LPP_PAYS_PERCENT = 100;
 var CONDITION_PAY = { "new": 1.0, "average": 0.8, "below": 0.6 };
+var CONDITION_LABEL = { "new": "New", "average": "Average", "below": "Below Average" };
+
+// Product photo per club type (one photo per type — the same photo shows for every model of that type).
+var CLUB_PHOTOS = {
+  "Driver": "club-driver.webp", "Fairway Wood": "club-driver.webp", "Hybrid": "club-driver.webp",
+  "Iron Set": "club-iron.webp", "Single Iron": "club-iron.webp", "Utility Iron": "club-iron.webp",
+  "Chipper": "club-wedge.webp", "Wedge": "club-wedge.webp", "Putter": "club-putter.webp"
+};
+function photoFor(type) { return CLUB_PHOTOS[type] || "club-driver.webp"; }
 
 var ITEM_TYPES = ["Golf Clubs", "Accessories"];
 var CATEGORIES = ["Chipper", "Driver", "Fairway Wood", "Hybrid", "Iron Set", "Putter", "Single Iron", "Utility Iron", "Wedge"];
@@ -379,8 +388,9 @@ function renderModels() {
     var t = document.createElement("button");
     t.type = "button";
     t.className = "model-tile" + (state.model && state.model.model === c.model && state.model.brand === c.brand ? " on" : "");
-    t.innerHTML = "<span class=\"model-name\">" + c.model.toUpperCase() + "</span>"
-      + "<span class=\"model-meta\">" + c.brand + " · " + c.type + " · $" + clubValue(c, "average") + " avg.</span>";
+    t.innerHTML = "<img class=\"model-thumb\" src=\"" + photoFor(c.type) + "\" alt=\"\">"
+      + "<span><span class=\"model-name\">" + c.model.toUpperCase() + "</span>"
+      + "<span class=\"model-meta\">" + c.brand + " · " + c.type + " · $" + clubValue(c, "average") + " avg.</span></span>";
     t.onclick = function () { selectModel(c); };
     grid.appendChild(t);
   });
@@ -398,9 +408,8 @@ function goPage(dir) {
 
 function selectModel(c) {
   state.model = c;
-  closeAllDd();
   renderDropdowns();
-  renderSelected();
+  openModal(c);
 }
 
 function renderSelected() {
@@ -460,6 +469,61 @@ document.querySelectorAll("#payoutRow span").forEach(function (el) {
   });
 });
 
+// ---- Product popup ----
+var modalClub = null;
+function money(n) { return "$" + n.toFixed(2); }
+function modalValue() {
+  if (!modalClub) return 0;
+  var cond = document.getElementById("modalCondition").value;
+  if (!cond) return 0;
+  var v = clubValue(modalClub, cond);
+  if (document.getElementById("modalHeadOnly").checked) v = Math.round(v * 0.7);
+  var qty = parseInt(document.getElementById("modalQty").value, 10) || 1;
+  return v * Math.max(1, qty);
+}
+function updateModalPrices() {
+  var cond = document.getElementById("modalCondition").value;
+  var addBtn = document.getElementById("modalAdd");
+  if (!cond || !modalClub) {
+    document.getElementById("modalCash").textContent = "$ —";
+    document.getElementById("modalPaypal").textContent = "$ —";
+    addBtn.disabled = true;
+    return;
+  }
+  var v = modalValue();
+  document.getElementById("modalCash").textContent = money(v);
+  document.getElementById("modalPaypal").textContent = money(v);
+  addBtn.disabled = false;
+}
+function openModal(c) {
+  modalClub = c;
+  document.getElementById("modalCat").textContent = c.type.toUpperCase();
+  document.getElementById("modalTitle").textContent = c.brand + " " + c.model;
+  document.getElementById("modalImg").src = photoFor(c.type);
+  document.getElementById("modalCondition").value = "";
+  document.getElementById("modalHeadOnly").checked = false;
+  document.getElementById("modalShaft").value = "Stock";
+  document.getElementById("modalQty").value = 1;
+  updateModalPrices();
+  document.getElementById("modalBackdrop").classList.add("open");
+}
+function closeModal() { document.getElementById("modalBackdrop").classList.remove("open"); }
+document.getElementById("modalCondition").addEventListener("change", updateModalPrices);
+document.getElementById("modalHeadOnly").addEventListener("change", updateModalPrices);
+document.getElementById("modalQty").addEventListener("input", updateModalPrices);
+document.getElementById("modalAdd").addEventListener("click", function () {
+  if (!modalClub) return;
+  var cond = document.getElementById("modalCondition").value;
+  var label = CONDITION_LABEL[cond];
+  var qty = Math.max(1, parseInt(document.getElementById("modalQty").value, 10) || 1);
+  var headOnly = document.getElementById("modalHeadOnly").checked;
+  var each = clubValue(modalClub, cond);
+  if (headOnly) each = Math.round(each * 0.7);
+  cart.push({ name: modalClub.brand + " " + modalClub.model + (headOnly ? " (head only)" : "") + (qty > 1 ? " × " + qty : ""), cond: label, value: each * qty });
+  renderCart();
+  closeModal();
+});
+
 renderDropdowns();
 renderModels();
 renderSelected();
@@ -468,6 +532,42 @@ renderCart();
 document.getElementById("opt-model").classList.add("open");
 document.getElementById("chev-model").textContent = "⌃";
 </script>
+
+<!-- Product popup — opens when a model tile is clicked -->
+<div class="modal-backdrop" id="modalBackdrop" onclick="if(event.target===this) closeModal()">
+  <div class="modal" role="dialog" aria-label="Club details">
+    <button class="modal-close" type="button" onclick="closeModal()">✕</button>
+    <div class="modal-grid">
+      <div class="modal-photo"><img id="modalImg" src="club-driver.webp" alt="Club photo"></div>
+      <div class="modal-body">
+        <p class="modal-cat" id="modalCat">DRIVER</p>
+        <h2 id="modalTitle"></h2>
+        <label for="modalCondition">Condition * <span class="small" style="float:right;">ⓘ Help</span></label>
+        <select id="modalCondition">
+          <option value="">Select Condition</option>
+          <option value="new">New</option>
+          <option value="average">Average</option>
+          <option value="below">Below Average</option>
+        </select>
+        <label class="check"><input type="checkbox" id="modalHeadOnly" style="width:auto;"> Club Head Only</label>
+        <label for="modalShaft">Shaft Model *</label>
+        <select id="modalShaft">
+          <option>Stock</option>
+          <option>Upgraded / aftermarket</option>
+          <option>Not sure</option>
+        </select>
+        <label for="modalQty">Quantity *</label>
+        <input id="modalQty" type="number" min="1" value="1">
+        <div class="modal-prices">
+          <div><span>Cash</span><strong id="modalCash">$ —</strong></div>
+          <div><span>PayPal</span><strong id="modalPaypal" style="color:#B3261E;">$ —</strong></div>
+        </div>
+        <p class="small">Example values — PayPal pays the same as Cash for now. Final price after LPP inspects in hand. Head only pays 70% (LPP to confirm).</p>
+        <button class="btn modal-add" id="modalAdd" type="button" disabled>🛒 Add to Cart</button>
+      </div>
+    </div>
+  </div>
+</div>
 
 </body>
 </html>

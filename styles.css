@@ -204,9 +204,35 @@ footer { padding: 36px 0 52px; color: #6B7A70; font-size: 16px; }
 .model-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1px; background: #E3DCC8; border: 1px solid #E3DCC8; }
 @media (max-width: 620px) { .model-grid { grid-template-columns: 1fr; } }
 .model-tile {
-  background: #FFFEFA; border: 0; cursor: pointer; padding: 18px 14px; text-align: left; font-family: inherit; min-height: 86px;
-  display: flex; flex-direction: column; gap: 6px; justify-content: center;
+  background: #FFFEFA; border: 0; cursor: pointer; padding: 14px; text-align: left; font-family: inherit; min-height: 86px;
+  display: grid; grid-template-columns: 72px 1fr; gap: 12px; align-items: center;
 }
+.model-thumb { width: 72px; height: 72px; object-fit: cover; background: #fff; border: 1px solid #E3DCC8; }
+
+/* Product popup */
+.modal-backdrop {
+  display: none; position: fixed; inset: 0; z-index: 50;
+  background: rgba(30,43,36,0.55); align-items: center; justify-content: center; padding: 16px;
+}
+.modal-backdrop.open { display: flex; }
+.modal { background: #FFFEFA; border-radius: 16px; max-width: 760px; width: 100%; max-height: 92vh; overflow-y: auto; position: relative; box-shadow: 0 24px 60px rgba(0,0,0,0.35); }
+.modal-close {
+  position: absolute; top: 12px; right: 12px; z-index: 2; width: 38px; height: 38px; border-radius: 50%;
+  border: 0; background: #E8D9D9; color: #B3261E; font-size: 17px; cursor: pointer;
+}
+.modal-grid { display: grid; grid-template-columns: 1fr 1fr; }
+@media (max-width: 640px) { .modal-grid { grid-template-columns: 1fr; } }
+.modal-photo { background: #EDEDEA; display: flex; align-items: center; justify-content: center; padding: 24px; }
+.modal-photo img { max-width: 100%; max-height: 420px; object-fit: contain; background: #fff; }
+.modal-body { padding: 28px 24px; }
+.modal-cat { color: #B3261E; font-weight: 800; font-size: 13px; letter-spacing: 1px; margin: 0 0 4px; }
+.modal-body h2 { font-size: 28px; margin: 0 0 18px; }
+.modal-body label { margin-top: 14px; }
+.modal-prices { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 20px 0 8px; text-align: center; }
+.modal-prices span { display: block; font-size: 15px; color: #3E4D44; }
+.modal-prices strong { font-size: 26px; font-family: "Fraunces", serif; }
+.modal-add { width: 100%; margin-top: 12px; }
+.modal-add:disabled { background: #D8DECE; color: #8A978D; box-shadow: none; cursor: not-allowed; }
 .model-tile:hover { background: #EAF1EA; }
 .model-tile.on { background: #2F6B4C; }
 .model-tile.on .model-name, .model-tile.on .model-meta { color: #fff; }
