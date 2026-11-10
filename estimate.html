@@ -26,7 +26,7 @@
     <section>
       <span class="eyebrow">STEP 1 OF 2 — ESTIMATE</span>
       <h1>What will we pay for your club?</h1>
-      <p class="lead">Three quick picks, and you'll see an estimate. No account, no email needed to see the number.</p>
+      <p class="lead">No typing — just click. Pick a brand, and your models pop up. Pick a model, then your condition.</p>
 
       <div class="progress">
         <span class="on">1. Club details</span>
@@ -49,8 +49,9 @@
             <option>Full set</option>
           </select>
 
-          <label for="brand">Brand</label>
+          <label for="brand">Brand — click, don't type</label>
           <select id="brand">
+            <option value="">Pick a brand…</option>
             <option>Titleist</option>
             <option>Callaway</option>
             <option>TaylorMade</option>
@@ -60,8 +61,10 @@
             <option>Other</option>
           </select>
 
-          <label for="model">Model</label>
-          <input id="model" type="text" placeholder="Example: TSR3, Paradym, Stealth 2…">
+          <label for="model">Model — pops up after you pick a brand</label>
+          <select id="model" disabled>
+            <option value="">Pick a brand first…</option>
+          </select>
 
           <label for="condition">Condition — be honest, it helps</label>
           <select id="condition">
@@ -71,15 +74,20 @@
             <option>Poor — heavy wear or damage</option>
           </select>
 
+          <label for="pgaValue" style="margin-top:18px;">Your PGA Value Guide value ($)</label>
+          <p class="small" style="margin:4px 0 8px;">We can't pull PGA's prices into this site — no feed for that. So check your value there, then type that one number in here.</p>
+          <p style="margin:0 0 10px;"><a class="btn btn-gold" href="https://valueguide.pga.com" target="_blank" rel="noopener">Check your PGA value →</a></p>
+          <input id="pgaValue" type="number" min="0" placeholder="Example: 200" inputmode="numeric">
+
           <p class="small" style="margin-top:14px;">Tip: if you're between two conditions, pick the lower one. The estimate will hold up better after inspection.</p>
         </div>
 
         <div>
           <div class="calc-box">
             <h2 style="font-size:24px;">Your estimate</h2>
-            <p><strong>Coming soon.</strong></p>
-            <div class="price-big" style="color:#2F6B4C;">$ —</div>
-            <p>Carson's prices aren't in yet. Once they are, this box will fill in automatically from what you picked on the left.</p>
+            <p><strong id="estimateLabel">Enter your PGA value to see it.</strong></p>
+            <div class="price-big" id="estimatePrice" style="color:#2F6B4C;">$ —</div>
+            <p id="estimateDetail">Pick your club on the left, check your PGA value, type it in, and this box fills in.</p>
             <p class="small">This is an estimate only. Final price is set after we inspect the club in hand.</p>
           </div>
 
@@ -109,9 +117,70 @@
 <footer>
   <div class="wrap-wide">
     <p><strong>LowPricedPars</strong> — We buy your used golf clubs.</p>
-    <p class="small">Preview — prices coming soon from Carson.</p>
+    <p class="small">Preview — estimate is based on the PGA value you enter. Final price after inspection.</p>
   </div>
 </footer>
+
+<script>
+// Change this one number if Carson pays less than the full PGA value.
+// 100 = pays full PGA value. 70 = pays 70% of PGA value.
+var CARSON_PAYS_PERCENT = 100;
+
+var MODELS = {
+  "Titleist": ["TSR2 Driver", "TSR3 Driver", "TSR4 Driver", "TSi2 Driver", "TSi3 Driver", "GT2 Driver", "GT3 Driver", "GT4 Driver", "AP2 Irons", "T100 Irons", "T150 Irons", "T200 Irons", "Vokey SM9 Wedge", "Vokey SM10 Wedge", "Scotty Cameron Putter", "Other Titleist model"],
+  "Callaway": ["Paradym Driver", "Paradym Ai Smoke Driver", "Rogue ST Max Driver", "Epic Speed Driver", "Mavrik Driver", "Apex Irons", "Apex Pro Irons", "Jaws Raw Wedge", "Odyssey Putter", "Other Callaway model"],
+  "TaylorMade": ["Stealth 2 Driver", "Stealth Driver", "Qi10 Driver", "Qi35 Driver", "SIM2 Driver", "P790 Irons", "P770 Irons", "MG4 Wedge", "Spider Putter", "Other TaylorMade model"],
+  "Ping": ["G430 Driver", "G425 Driver", "G410 Driver", "i230 Irons", "i525 Irons", "G430 Irons", "Glide Wedge", "Anser Putter", "Other Ping model"],
+  "Cobra": ["Aerojet Driver", "LTDx Driver", "King Radspeed Driver", "King Forged Irons", "King Snakebite Wedge", "Other Cobra model"],
+  "Mizuno": ["ST-Z 230 Driver", "ST-X 230 Driver", "JPX 923 Irons", "JPX 925 Irons", "T24 Wedge", "M Craft Putter", "Other Mizuno model"],
+  "Other": ["Other model — tell us in the sell form"]
+};
+
+var brandEl = document.getElementById("brand");
+var modelEl = document.getElementById("model");
+var pgaEl = document.getElementById("pgaValue");
+var priceEl = document.getElementById("estimatePrice");
+var labelEl = document.getElementById("estimateLabel");
+var detailEl = document.getElementById("estimateDetail");
+
+brandEl.addEventListener("change", function () {
+  var list = MODELS[brandEl.value] || [];
+  modelEl.innerHTML = "";
+  if (!list.length) {
+    modelEl.disabled = true;
+    var opt = document.createElement("option");
+    opt.textContent = "Pick a brand first…";
+    modelEl.appendChild(opt);
+    return;
+  }
+  modelEl.disabled = false;
+  var first = document.createElement("option");
+  first.value = "";
+  first.textContent = "Pick a model…";
+  modelEl.appendChild(first);
+  list.forEach(function (m) {
+    var o = document.createElement("option");
+    o.value = m;
+    o.textContent = m;
+    modelEl.appendChild(o);
+  });
+});
+
+function updateEstimate() {
+  var v = parseFloat(pgaEl.value);
+  if (!v || v <= 0) {
+    priceEl.textContent = "$ —";
+    labelEl.textContent = "Enter your PGA value to see it.";
+    detailEl.textContent = "Pick your club on the left, check your PGA value, type it in, and this box fills in.";
+    return;
+  }
+  var est = Math.round(v * CARSON_PAYS_PERCENT / 100);
+  priceEl.textContent = "$" + est;
+  labelEl.textContent = "Your estimate from LowPricedPars";
+  detailEl.textContent = "Based on the PGA value you entered ($" + v + "). Final price after Carson inspects the club.";
+}
+pgaEl.addEventListener("input", updateEstimate);
+</script>
 
 </body>
 </html>
