@@ -28,8 +28,9 @@ header {
   box-shadow: 0 6px 24px rgba(37,49,43,0.08);
 }
 .header-inner { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; }
-.logo { font-size: 26px; font-weight: 800; color: #1E2B24; text-decoration: none; }
-.logo span { color: #2F6B4C; }
+.logo { font-size: 42px; font-weight: 800; color: #1E2B24; text-decoration: none; line-height: 1; }
+.logo span { color: #1E2B24; }
+.logo .gold { color: #C9A24B; }
 .logo-dot { color: #C9A24B; }
 nav { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
 nav a {
@@ -71,6 +72,7 @@ p { margin: 0 0 16px; color: #3E4D44; }
 }
 .btn:hover { background: #265A42; }
 .btn-gold { background: #C9A24B; color: #1E2B24; box-shadow: 0 6px 16px rgba(201,162,75,0.3); }
+.btn-big { font-size: 22px; padding: 19px 38px; }
 .btn-gold:hover { background: #B8943F; color: #fff; }
 .btn-ghost { background: #fff; color: #2F6B4C; border: 2px solid #2F6B4C; box-shadow: none; margin-left: 10px; }
 .btn-ghost:hover { background: #EAF1EA; }
